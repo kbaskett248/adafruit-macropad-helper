@@ -1,11 +1,13 @@
+import sys
 import time
 
 import json
 import logging
 import os
-import subprocess
 from datetime import datetime
 from typing import List
+
+import pygetwindow as gw
 
 import serial
 from adafruit_board_toolkit import circuitpython_serial
@@ -38,6 +40,16 @@ def send_update():
         "computername": os.environ["COMPUTERNAME"],
         "timestamp": int(datetime.now().timestamp()),
     }
+
+    if sys.platform in ("darwin", "win32"):
+        active_window = gw.getActiveWindow()
+        if active_window:
+            try:
+                title = active_window.title
+            except AttributeError:
+                title = active_window
+
+            data_to_send["active_window"] = title
 
     try:
         ports = [comport.device for comport in circuitpython_serial.data_comports()]
