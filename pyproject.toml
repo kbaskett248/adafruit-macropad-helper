@@ -6,6 +6,7 @@ authors = ["Kenny Baskett <kbaskett248@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
+adafruit-board-toolkit = "^1.1.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
