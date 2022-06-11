@@ -177,6 +177,9 @@ def main():
     schedule.every(1).minute.do(send_time_updates, collection)
     schedule.every(2).seconds.do(send_window_updates, collection)
 
+    # Run all tasks immediately upon startup
+    schedule.run_all()
+
     while True:
         schedule.run_pending()
         time.sleep(1)
