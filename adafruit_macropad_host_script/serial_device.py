@@ -1,7 +1,7 @@
 import logging
-import serial
 from typing import Any
 
+import serial
 
 logger = logging.getLogger(__name__)
 
