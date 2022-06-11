@@ -5,21 +5,11 @@ from typing import Optional
 
 import pygetwindow as gw
 import schedule
+import typer
 
 from .circuit_python import CircuitPythonDeviceCollection
 
 logger = logging.getLogger(__name__)
-logger.setLevel("INFO")
-
-formatter = logging.Formatter(
-    fmt="%(asctime)s %(levelname)-8s %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
-)
-handler = logging.StreamHandler(sys.stdout)
-handler.setLevel("INFO")
-handler.setFormatter(formatter)
-
-logging.root.addHandler(handler)
-logging.root.setLevel("INFO")
 
 
 def send_time_updates(collection: CircuitPythonDeviceCollection):
@@ -46,14 +36,38 @@ def send_window_updates(collection: CircuitPythonDeviceCollection):
             device.update_active_window(title)
 
 
-def main():
-    print("Starting script... Press Ctrl+C to close")
+def verbose_logging():
+    formatter = logging.Formatter(
+        fmt="%(asctime)s %(levelname)-8s %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
+    )
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setLevel("INFO")
+    handler.setFormatter(formatter)
+
+    logging.root.addHandler(handler)
+    logging.root.setLevel("INFO")
+
+
+def setup_schedule():
     collection = CircuitPythonDeviceCollection()
 
     schedule.every(5).seconds.do(collection.connect_to_new_devices)
     schedule.every(1).minute.do(send_time_updates, collection)
     schedule.every(2).seconds.do(send_window_updates, collection)
 
+
+def main(
+    verbose: bool = typer.Option(
+        False, "-v", "--verbose", help="Display additional logging"
+    )
+):
+    """Send data to a connected Adafruit Macropad."""
+    print("Starting script... Press Ctrl+C to close")
+
+    if verbose:
+        verbose_logging()
+
+    setup_schedule()
     # Run all tasks immediately upon startup
     schedule.run_all()
 
@@ -66,5 +80,9 @@ def main():
         sys.exit()
 
 
+def app():
+    typer.run(main)
+
+
 if __name__ == "__main__":
-    main()
+    app()
