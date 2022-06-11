@@ -25,7 +25,7 @@ class SerialDevice:
         if not self.connected:
             return False
 
-        logger.debug(f"{self.serial_.port} :: {data}")
+        logger.info(f"{self.serial_.port} :: {data}")
         try:
             self.serial_.open()
             self.serial_.write(data)

@@ -8,15 +8,18 @@ import schedule
 
 from circuit_python import CircuitPythonDeviceCollection
 
+logger = logging.getLogger(__name__)
+logger.setLevel("INFO")
+
 formatter = logging.Formatter(
     fmt="%(asctime)s %(levelname)-8s %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
 )
-logger = logging.getLogger("serial")
-logger.setLevel(logging.DEBUG)
-fh = logging.FileHandler("serial.log")
-fh.setLevel(logging.DEBUG)
-fh.setFormatter(formatter)
-logger.addHandler(fh)
+handler = logging.StreamHandler(sys.stdout)
+handler.setLevel("INFO")
+handler.setFormatter(formatter)
+
+logging.root.addHandler(handler)
+logging.root.setLevel("INFO")
 
 
 def send_time_updates(collection: CircuitPythonDeviceCollection):
@@ -44,7 +47,7 @@ def send_window_updates(collection: CircuitPythonDeviceCollection):
 
 
 def main():
-    logger.debug("Starting script")
+    logger.info("Starting script")
     collection = CircuitPythonDeviceCollection()
 
     schedule.every(5).seconds.do(collection.connect_to_new_devices)
