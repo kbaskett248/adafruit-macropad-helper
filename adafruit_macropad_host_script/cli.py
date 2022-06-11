@@ -47,7 +47,8 @@ def send_window_updates(collection: CircuitPythonDeviceCollection):
 
 
 def main():
-    logger.info("Starting script")
+    logger.info("Starting script...")
+    logger.info("Press Ctrl+C to close the script")
     collection = CircuitPythonDeviceCollection()
 
     schedule.every(5).seconds.do(collection.connect_to_new_devices)
@@ -57,9 +58,13 @@ def main():
     # Run all tasks immediately upon startup
     schedule.run_all()
 
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
+    try:
+        while True:
+            schedule.run_pending()
+            time.sleep(1)
+    except KeyboardInterrupt:
+        logger.info("Closing script...")
+        sys.exit()
 
 
 if __name__ == "__main__":
