@@ -47,8 +47,7 @@ def send_window_updates(collection: CircuitPythonDeviceCollection):
 
 
 def main():
-    logger.info("Starting script...")
-    logger.info("Press Ctrl+C to close the script")
+    print("Starting script... Press Ctrl+C to close")
     collection = CircuitPythonDeviceCollection()
 
     schedule.every(5).seconds.do(collection.connect_to_new_devices)
@@ -63,7 +62,7 @@ def main():
             schedule.run_pending()
             time.sleep(1)
     except KeyboardInterrupt:
-        logger.info("Closing script...")
+        print("Terminating...")
         sys.exit()
 
 
