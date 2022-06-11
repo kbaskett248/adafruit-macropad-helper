@@ -6,7 +6,7 @@ from typing import Optional
 import pygetwindow as gw
 import schedule
 
-from circuit_python import CircuitPythonDeviceCollection
+from .circuit_python import CircuitPythonDeviceCollection
 
 logger = logging.getLogger(__name__)
 logger.setLevel("INFO")

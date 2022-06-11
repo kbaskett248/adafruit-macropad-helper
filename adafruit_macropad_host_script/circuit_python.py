@@ -6,7 +6,7 @@ from typing import Any, Dict, Iterable, Optional
 
 from adafruit_board_toolkit import circuitpython_serial
 
-from serial_device import SerialDevice
+from .serial_device import SerialDevice
 
 
 class CircuitPythonDevice:
