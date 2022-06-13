@@ -1,5 +1,5 @@
 import json
-import os
+import socket
 import sys
 from datetime import datetime, timedelta
 from typing import Any, Dict, Iterable, Optional
@@ -33,7 +33,7 @@ class CircuitPythonDevice:
         self.serial_device.connect()
         data = {
             "event": "connect",
-            "host_name": os.environ["COMPUTERNAME"],
+            "host_name": socket.gethostname(),
             "host_os": sys.platform,
         }
         return self._send_data(data)
