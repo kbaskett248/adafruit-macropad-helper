@@ -10,6 +10,7 @@ adafruit-board-toolkit = "^1.1.0"
 PyGetWindow = "^0.0.9"
 schedule = "^1.1.0"
 typer = "^0.4.1"
+pyobjc-framework-Quartz = { version = "^8.5", markers = "sys_platform == 'darwin'" }
 
 [tool.poetry.dev-dependencies]
 
