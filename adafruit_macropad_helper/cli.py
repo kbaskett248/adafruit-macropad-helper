@@ -19,14 +19,7 @@ def send_time_updates(collection: CircuitPythonDeviceCollection):
 
 
 def send_window_updates(collection: CircuitPythonDeviceCollection):
-    title: Optional[str] = None
-    if sys.platform in ("darwin", "win32"):
-        active_window = gw.getActiveWindow()
-        if active_window:
-            try:
-                title = active_window.title
-            except AttributeError:
-                title = str(active_window)
+    title = get_window_title()
 
     if not title:
         return
@@ -34,6 +27,25 @@ def send_window_updates(collection: CircuitPythonDeviceCollection):
     for device in collection.connected_devices():
         if device.needs_window_update(title):
             device.update_active_window(title)
+
+
+def get_window_title() -> Optional[str]:
+    if sys.platform not in ("darwin", "win32"):
+        return None
+
+    active_window = gw.getActiveWindow()
+    if not active_window:
+        return None
+
+    if isinstance(active_window, str):
+        return active_window
+
+    try:
+        return active_window.title
+    except AttributeError:
+        pass
+
+    return str(active_window)
 
 
 def verbose_logging():
